@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWM Simulation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f8f9fa;
+            width: 100%;
+        }
+        #container {
+            width: 95vw; /* 95% of the viewport width */
+            height: 60vh; /* 60% of the viewport height */
+            position: relative;
+            border: 2px solid #343a40;
+            background: #e9ecef;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .car {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+        #car1 {
+            top: 10%;
+            background: #17a2b8;
+            color: white;
+        }
+        #car2 {
+            top: 50%;
+            background: #28a745;
+            color: white;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 95vw;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+        .control-group label {
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .control-group input {
+            padding: 5px;
+            font-size: 1em;
+            width: 100px;
+        }
+        .btn-custom {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn-custom:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="car1" class="car"><i class="fas fa-car-side"></i></div>
+        <div id="car2" class="car"><i class="fas fa-car-side"></i></div>
+    </div>
+    <div class="controls">
+        <div class="control-group">
+            <label for="car1Speed">Car 1 Speed (m/s):</label>
+            <input type="number" id="car1Speed" class="form-control" value="4">
+        </div>
+        <div class="control-group">
+            <label for="car2Speed">Car 2 Speed (m/s):</label>
+            <input type="number" id="car2Speed" class="form-control" value="8">
+        </div>
+        <div class="control-group">
+            <label for="car2Delay">Car 2 Delay (ms):</label>
+            <input type="number" id="car2Delay" class="form-control" value="2000">
+        </div>
+        <div class="control-group">
+            <button id="runBtn" class="btn btn-custom"><i class="fas fa-play"></i> Run</button>
+            <button id="resetBtn" class="btn btn-custom"><i class="fas fa-redo"></i> Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const car1 = document.getElementById('car1');
+        const car2 = document.getElementById('car2');
+        const runBtn = document.getElementById('runBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const car1SpeedInput = document.getElementById('car1Speed');
+        const car2SpeedInput = document.getElementById('car2Speed');
+        const car2DelayInput = document.getElementById('car2Delay');
+
+        let containerWidth = document.getElementById('container').clientWidth;
+        const carWidth = car1.clientWidth;
+
+        let car1Left = 0;
+        let car2Left = 0;
+        let car1Speed = parseFloat(car1SpeedInput.value);  // m/s
+        let car2Speed = parseFloat(car2SpeedInput.value);  // m/s
+        let car2Delay = parseFloat(car2DelayInput.value);  // ms
+        let mainInterval;
+        let car2Running = false;
+        let car2ToggleTime = car2Delay;
+
+        function reset() {
+            clearInterval(mainInterval);
+            car1Left = 0;
+            car2Left = 0;
+            car1.style.transform = `translateX(${car1Left}px)`;
+            car2.style.transform = `translateX(${car2Left}px)`;
+            car2Running = false;
+            car2ToggleTime = car2Delay;
+        }
+
+        function run() {
+            car1Speed = parseFloat(car1SpeedInput.value);
+            car2Speed = parseFloat(car2SpeedInput.value);
+            car2Delay = parseFloat(car2DelayInput.value);
+
+            mainInterval = setInterval(() => {
+                // Move car1
+                if (car1Left + carWidth < containerWidth) {
+                    car1Left += (car1Speed / 60) * (containerWidth / 16);  // Scale speed to container width
+                    car1.style.transform = `translateX(${car1Left}px)`;
+                }
+
+                // Toggle car2 running state
+                car2ToggleTime -= 1000 / 60;
+                if (car2ToggleTime <= 0) {
+                    car2Running = !car2Running;
+                    car2ToggleTime = car2Delay;
+                }
+
+                // Move car2 if running
+                if (car2Running && car2Left + carWidth < containerWidth) {
+                    car2Left += (car2Speed / 60) * (containerWidth / 16);  // Scale speed to container width
+                    car2.style.transform = `translateX(${car2Left}px)`;
+                }
+            }, 1000 / 60);  // 60 FPS
+        }
+
+        runBtn.addEventListener('click', run);
+        resetBtn.addEventListener('click', reset);
+
+        // Adjust sizes on window resize
+        window.addEventListener('resize', () => {
+            containerWidth = document.getElementById('container').clientWidth;
+            reset();
+        });
+
+        // Initialize positions
+        reset();
+    </script>
+</body>
+</html>
