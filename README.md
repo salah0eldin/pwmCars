@@ -1,4 +1,5 @@
 PWM Simulation for Robotics Workshop
+
 This project is a PWM (Pulse Width Modulation) simulation designed for a robotics workshop aimed at children. The simulation demonstrates how PWM controls the speed of two cars moving at different speeds. It includes interactive controls for adjusting the cars' speeds, duty cycle, and frequency, providing a hands-on learning experience.
 
 Features:
