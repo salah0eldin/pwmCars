@@ -1,0 +1,155 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+body {
+    overflow-x: hidden;
+    /* Hide horizontal overflow */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+}
+
+#container {
+    width: 95vw;
+    min-height: 30vh;
+    /* Minimum height to prevent shrinking */
+    max-height: 80vh;
+    /* Maximum height with scrolling allowed */
+    position: relative;
+    border: 2px solid #343a40;
+    border-left: 0;
+    border-right: 0;
+    background: #e9ecef;
+    margin-bottom: 20px;
+    /* border-radius: 5px; */
+    /* overflow: hidden; */
+}
+
+/* Rest of your existing CSS */
+
+.car {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+#car1 {
+    top: 20%;
+    background: #17a2b8;
+    color: white;
+}
+
+#car2 {
+    top: 59%;
+    background: #28a745;
+    color: white;
+}
+
+.progress-lines {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.progress-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #b1b2b4;
+}
+
+.line-text {
+    position: absolute;
+    top: 100%;
+    left: 150%;
+    font-size: 0.8em;
+    color: #343a40;
+    transform: translateY(-100%);
+}
+
+.progress-line:nth-child(1) .line-text {
+    left: -35%;
+    transform: translate(20%, -100%);
+}
+
+.progress-line:nth-child(5) .line-text {
+    left: -25%;
+    transform: translate(-110%, -100%);
+}
+
+.progress-line:nth-child(1) {
+    left: 0%;
+    background-color: transparent;
+}
+
+.progress-line:nth-child(2) {
+    left: 25%;
+}
+
+.progress-line:nth-child(3) {
+    left: 50%;
+}
+
+.progress-line:nth-child(4) {
+    left: 75%;
+}
+
+.progress-line:nth-child(5) {
+    left: 100%;
+    background-color: transparent;
+}
+
+.road-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #b1b2b4;
+}
+
+#car1-road {
+    top: calc(20% + 30px);
+}
+
+#car2-road {
+    top: calc(59% + 30px);
+}
+
+.btn-custom:hover {
+    background: #0056b3;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.credits {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #343a40;
+    background-color: #f8f9fa;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.credits a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
