@@ -7,7 +7,7 @@ const stopBtn = document.getElementById("stopBtn");
 const car1SpeedInput = document.getElementById("car1Speed");
 const car2SpeedInput = document.getElementById("car2Speed");
 const car2DutyCycleInput = document.getElementById("car2DutyCycle");
-const car2FrequencyInput = document.getElementById("car2Frequency");
+const car2TimeInput = document.getElementById("car2Time");
 const roadLengthInput = document.getElementById("roadLength");
 const resumeBtn = document.getElementById("resumeBtn");
 
@@ -19,10 +19,10 @@ let car2Left = -carWidth / 2;
 let car1Speed = 4; // m/s
 let car2Speed = 8; // m/s
 let car2DutyCycle = 50; // %
-let car2Frequency = 1; // Hz
+let car2Time = 1; // Hz
 let roadLength = 4; // m
-let car2OnDelay = (1 / car2Frequency) * (car2DutyCycle / 100) * 1000; // ms
-let car2OffDelay = (1 / car2Frequency) * (1 - car2DutyCycle / 100) * 1000; // ms
+let car2OnDelay = (car2Time) * (car2DutyCycle / 100); // ms
+let car2OffDelay = (car2Time) * (1 - car2DutyCycle / 100); // ms
 let mainInterval;
 let car2Running = false;
 let car2ToggleTime = car2OffDelay;
@@ -42,9 +42,9 @@ function updateSimulationVariables() {
   car1Speed = parseFloat(car1SpeedInput.value);
   car2Speed = parseFloat(car2SpeedInput.value);
   car2DutyCycle = parseFloat(car2DutyCycleInput.value);
-  car2Frequency = parseFloat(car2FrequencyInput.value);
+  car2Time = parseFloat(car2TimeInput.value);
   roadLength = parseFloat(roadLengthInput.value);
-  let totalTime = (1 / car2Frequency) * 1000; // Total time period in ms
+  let totalTime = car2Time; // Total time period in ms
   car2OnDelay = totalTime * (car2DutyCycle / 100);
   car2OffDelay = totalTime - car2OnDelay;
 }
@@ -52,7 +52,7 @@ function updateSimulationVariables() {
 car1SpeedInput.addEventListener("input", updateSimulationVariables);
 car2SpeedInput.addEventListener("input", updateSimulationVariables);
 car2DutyCycleInput.addEventListener("input", updateSimulationVariables);
-car2FrequencyInput.addEventListener("input", updateSimulationVariables);
+car2TimeInput.addEventListener("input", updateSimulationVariables);
 roadLengthInput.addEventListener("input", updateSimulationVariables);
 
 function run() {
