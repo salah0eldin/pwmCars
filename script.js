@@ -72,8 +72,8 @@ function run() {
       alert(
         "Simulation capabilities cannot handle these numbers. Please choose other numbers. (Reduce frequency)"
       );
+      return false;
     }
-    return false;
   }
 
   startInterval();
